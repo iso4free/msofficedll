@@ -3487,8 +3487,23 @@ const
   wdChineseMacao = 5124;
   wdEnglishTrinidad = 11273;
 
-{ Для встановлення розміщення сторінок}
+{ Для размещения страниц}
   wdNormalPage = 0;   //нормальне
   wdTwoOnOne = 1;     //2 стор. на 1
   wdBookFold = 2;     //брошура
-  
+
+{ Константы для M$ Outlook}  
+{ OlDefaultFolders }
+
+  olFolderDeletedItems = $00000003;
+  olFolderOutbox = $00000004;
+  olFolderSentMail = $00000005;
+  olFolderInbox = $00000006;
+  olFolderCalendar = $00000009;
+  olFolderContacts = $0000000A;
+  olFolderJournal = $0000000B;
+  olFolderNotes = $0000000C;
+  olFolderTasks = $0000000D;
+  olFolderDrafts = $00000010;
+  olPublicFoldersAllPublicFolders = $00000012;
+
