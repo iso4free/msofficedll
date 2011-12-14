@@ -24,7 +24,7 @@ unit uofficedll;
 (в Lazarus также необходимо подключить модуль Variants и модуль ComObj).}
 interface
   uses sysutils;
- {$I wdconst.inc}
+ {$I const.inc}
 
  function CentimetersToPoints(cm : Real) : Real; stdcall; external 'msofficedll.dll' name 'CentimetersToPoints';
  {* Переводит сантиметры в точки}
@@ -273,6 +273,36 @@ Procedure CreateTableEx(Col,Row : Integer; DefaultTableBehavior,AutoFitBehavior 
 
  procedure SetCellValueDate(var Xls : Variant; CellName : ShortString; value : TDatetime);StdCall; external 'msofficedll.dll' name 'SetCellValueDate';
  {*Записать значение как дату в указанную ячейку}
+
+ {******************************************************************************}
+ {                                                                              }
+ {                   Функции для автоматизации M$ Outlook                       }
+ {              (Взято из библиотеки outlookdll от EmeraldMan)                  }
+ {******************************************************************************}
+
+ procedure OutLookConnect(var OL: Variant);StdCall; external 'msofficedll.dll' name 'OutLookConnect';
+ {*Подключаемся к OutLook}
+
+
+ procedure OutLookNewFolder(var OL: Variant; s: ShortString);StdCall; external 'msofficedll.dll' name 'OutLookNewFolder';
+ {*Новая папка контактов}
+
+ procedure OutLookNewContact(var OL: Variant; folder:ShortString; name:ShortString);StdCall; external 'msofficedll.dll' name 'OutLookNewContact';
+ {*Новый контакт
+ folder - название папки в OutLook контактах;
+ name - имя контакта
+ Если папки folder не существует, то будет создана.
+ Это вполне рабочая функция, правда добавляет только имя;
+ Для добавления всего остального проишите
+ OutlookContact.LastName
+ OutlookContact.MiddleName
+ OutlookContact.CompanyName
+ Contact.HomeTelephoneNumber
+ Contact.Email1Address
+ и т.д. кому что нужно}
+
+ procedure OutLookDisConnect(var OL: Variant);StdCall; external 'msofficedll.dll' name 'OutLookDisConnect';
+ {*Отключаемся от OutLook}
 
 
 

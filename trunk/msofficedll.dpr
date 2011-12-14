@@ -31,7 +31,7 @@ library msofficedll;
 uses
   SysUtils, Classes, ComObj, ActiveX;
 
-{$I wdconst.inc}
+{$I const.inc}
 
 var SaveExit: Pointer;   // Required by Exit routine
 
@@ -545,6 +545,91 @@ end;
   Xls.ActiveSheet.Range[CellName].Value := Value;
  end;
 
+ {******************************************************************************}
+ {                                                                              }
+ {                   Функции для автоматизации M$ Outlook                       }
+ {              (Взято из библиотеки outlookdll от EmeraldMan)                  }
+ {******************************************************************************}
+
+procedure OutLookConnect(var OL: Variant);StdCall;
+{*Подключаемся к OutLook}
+begin
+  OL := CreateOleObject('Outlook.Application');
+end;
+
+procedure OutLookNewFolder(var OL: Variant; s: ShortString);StdCall;
+{*Новая папка контактов}
+begin
+  OL.GetNameSpace('MAPI').GetDefaultFolder(olFolderContacts).AddFolder(s);
+end;
+
+procedure OutLookNewContact(var OL: Variant; folder:ShortString; name:ShortString);StdCall;
+{*Новый контакт
+folder - название папки в OutLook контактах;
+name - имя контакта
+Если папки folder не существует, то будет создана.
+Это вполне рабочая функция, правда добавляет только имя;
+Для добавления всего остального проишите
+OutlookContact.LastName
+OutlookContact.MiddleName
+OutlookContact.CompanyName
+Contact.HomeTelephoneNumber
+Contact.Email1Address
+и т.д. кому что нужно}
+var
+  NameSpace : OleVariant;
+  ContactsRoot : OleVariant;
+  ContactsFolder : OleVariant;
+  OutlookContact : OleVariant;
+  SubFolderName : string;
+  Position : integer;
+  Found : boolean;
+  Counter : integer;
+  TestContactFolder : OleVariant;
+begin
+  // Get name space
+  NameSpace := OL.GetNameSpace('MAPI');
+   // Get root contacts folder
+  ContactsRoot := NameSpace.GetDefaultFolder(olFolderContacts);
+   // Iterate to subfolder
+  ContactsFolder := ContactsRoot;
+  while folder <> '' do begin
+    // Extract next subfolder
+    Position := Pos('\', folder);
+      if Position > 0 then begin
+        SubFolderName := Copy(folder, 1, Position - 1);
+        folder := Copy(folder, Position + 1, Length(folder));
+      end
+      else begin
+        SubFolderName := folder;
+        folder := '';
+      end;
+      if SubFolderName = '' then Break;
+      // Search subfolder
+      Found := False;
+      for Counter := 1 to ContactsFolder.Folders.Count do begin
+        TestContactFolder := ContactsRoot.Folders.Item(Counter);
+        if LowerCase(TestContactFolder.Name) = LowerCase(SubFolderName) then begin
+          ContactsFolder := TestContactFolder;
+          Found := True;
+          Break;
+        end;
+      end;
+     // If not found create
+     if not Found then ContactsFolder := ContactsFolder.Folders.Add(SubFolderName);
+  end;
+  // Create contact item
+  OutlookContact := ContactsFolder.Items.Add;
+  // Fill contact information
+  OutlookContact.FirstName := Name;
+  OutlookContact.Save;
+end;
+
+procedure OutLookDisConnect(var OL: Variant);StdCall;
+{*Отключаемся от OutLook}
+begin
+  OL := Unassigned;
+end;
 
 
 exports
@@ -560,7 +645,9 @@ CellTextOrientation,SetWordVisible,CheckWordVersion,SaveDocAs,CloseDoc,CloseWord
 PrintDialogWord,CreateTableEx,
 //Excel
 NewXlsDocument,OpenXlsDocument,GetXlsWorkBook,GetXlsWorkBookSheet,SetCellValue,
-SetCellValueInteger,SetCellValueFloat,SetCellValueDate;
+SetCellValueInteger,SetCellValueFloat,SetCellValueDate,
+//Outlook
+OutLookConnect,OutLookNewFolder,OutLookNewContact,OutLookDisConnect;
 
 begin
   CoInitialize(nil);
