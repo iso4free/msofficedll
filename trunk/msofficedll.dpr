@@ -527,21 +527,26 @@ end;
  begin
   Range := Xls.ActiveSheet.Range[CellName];
   Range.Value:=value;
-  Range.NumberFormat:='General';
+//  Range.NumberFormat:='General';
  end;
 
-// procedure SetCellValueCurrency(var Xls : Variant; CellName : ShortString; value : Currency);StdCall;
+ procedure SetCellValueCurrency(var Xls : Variant; CellName : ShortString; value : Currency);StdCall;
  {*«аписать значение как денежное в указанную €чейку}
-{ begin
+ begin
   Xls.ActiveSheet.Range[CellName].Value := value;
-  Xls.ActiveSheet.Range[CellName].NumberFormat:='0.00';
- end;}
+//  Xls.ActiveSheet.Range[CellName].NumberFormat:='0.00';
+ end;
 
+ procedure SetCellValueFormat(var Xls : Variant; CellName : ShortString; valueformat : ShortString);StdCall;
+ {*”казать формат данных заданной €чейки}
+ begin
+  Xls.ActiveSheet.Range[CellName].NumberFormat:=valueformat;
+ end;
 
  procedure SetCellValueDate(var Xls : Variant; CellName : ShortString; value : TDatetime);StdCall;
  {*«аписать значение как дату в указанную €чейку}
  begin
-  Xls.ActiveSheet.Range[CellName].NumberFormat:='dd.mm.yyyy';
+//  Xls.ActiveSheet.Range[CellName].NumberFormat:='dd.mm.yyyy';
   Xls.ActiveSheet.Range[CellName].Value := Value;
  end;
 
@@ -643,9 +648,12 @@ AddTabPosition,DefaultTabPos,ClearAllTabs,CreateTable,SetColWidth,GotoRight,
 GotoLeft,GotoUp,GotoDown,MergeCellsR,MergeCellsD,DeleteRow,DeleteCol,ExitTable,
 CellTextOrientation,SetWordVisible,CheckWordVersion,SaveDocAs,CloseDoc,CloseWord,
 PrintDialogWord,CreateTableEx,
+
 //Excel
 NewXlsDocument,OpenXlsDocument,GetXlsWorkBook,GetXlsWorkBookSheet,SetCellValue,
-SetCellValueInteger,SetCellValueFloat,SetCellValueDate,
+SetCellValueInteger,SetCellValueFloat,SetCellValueDate,SetCellValueCurrency,
+SetCellValueFormat,
+
 //Outlook
 OutLookConnect,OutLookNewFolder,OutLookNewContact,OutLookDisConnect;
 

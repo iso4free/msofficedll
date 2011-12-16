@@ -58,4 +58,7 @@ begin
  SetCellValueFloat(_xl,'C2',123.456);
  SetCellValue(_xl,'D1','Дата');
  SetCellValueDate(_xl,'D2',Now);
+ SetCellValue(_xl,'E1','Деньги');
+ SetCellValueFloat(_xl,'E2',123.45);
+ SetCellValueFormat(_xl,'E2','0.00 грн.');
  end.

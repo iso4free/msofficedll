@@ -38,10 +38,11 @@
         <Filename Value="testdll.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="testdll"/>
+        <IsVisibleTab Value="True"/>
         <EditorIndex Value="0"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="39"/>
-        <CursorPos X="31" Y="60"/>
+        <TopLine Value="41"/>
+        <CursorPos X="35" Y="63"/>
         <UsageCount Value="48"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
@@ -57,11 +58,10 @@
       <Unit2>
         <Filename Value="uofficedll.pas"/>
         <UnitName Value="uofficedll"/>
-        <IsVisibleTab Value="True"/>
         <EditorIndex Value="1"/>
         <WindowIndex Value="0"/>
         <TopLine Value="271"/>
-        <CursorPos X="1" Y="282"/>
+        <CursorPos X="1" Y="280"/>
         <UsageCount Value="13"/>
         <Loaded Value="True"/>
       </Unit2>

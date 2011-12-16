@@ -274,6 +274,12 @@ Procedure CreateTableEx(Col,Row : Integer; DefaultTableBehavior,AutoFitBehavior 
  procedure SetCellValueDate(var Xls : Variant; CellName : ShortString; value : TDatetime);StdCall; external 'msofficedll.dll' name 'SetCellValueDate';
  {*«аписать значение как дату в указанную €чейку}
 
+ procedure SetCellValueCurrency(var Xls : Variant; CellName : ShortString; value : Currency);StdCall; external 'msofficedll.dll' name 'SetCellValueFloat';
+ {*«аписать значение с денежным форматом в указанную €чейку}
+
+ procedure SetCellValueFormat(var Xls : Variant; CellName : ShortString; valueformat : ShortString);StdCall; external 'msofficedll.dll' name 'SetCellValueFormat';
+ {*”казать формат данных заданной €чейки}
+
  {******************************************************************************}
  {                                                                              }
  {                   ‘ункции дл€ автоматизации M$ Outlook                       }
