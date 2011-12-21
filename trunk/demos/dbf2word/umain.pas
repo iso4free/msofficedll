@@ -144,6 +144,8 @@ end;
 procedure TForm1.FormDestroy(Sender: TObject);
 begin
   Dbf1.Active:=false;
+  INI.WriteBool('SECTION1','DOS CODEPAGE',CheckBox1.Checked);
+  INI.WriteString('SECTION2','LISTNUM',Edit2.Text);
   INI.Destroy;
   DecimalSeparator  := oldDecSep;
   ThousandSeparator := oldThSep;
@@ -151,12 +153,12 @@ end;
 
 procedure TForm1.Button1Click(Sender: TObject);
 begin
-  //відкрити діалог вибору файла DBF
+  //открыть диалог выбора файла DBF
   if OpenDialog1.Execute then begin
-    //якщо файл вибрано, внести його ім'я в поле на формі
+    //если файл выбран, внести его имя в поле на форму
     Edit1.Text:=ExtractFileName(OpenDialog1.FileName);
   end;
-  //відкрити DBF
+  //открыть DBF
   if OpenDialog1.FileName<>'' then begin
    Dbf1.FilePathFull:=ExtractFilePath(OpenDialog1.FileName);
    Dbf1.TableName:=Edit1.Text;
@@ -170,21 +172,21 @@ var W : Variant;
    sum: Currency;
    i  : Integer;
 begin
- //обнуляємо суму
+ //обнуляем сумму
  sum := 0;
- //Створюємо новий документ з полями зліва 2 см, з інших сторін по 1 см
+ //Создаем новый документ с полями слева 2 см, с других сторон по 1 см
  NewDocument(w,false);
  PageMargins(2,1,1,1,w);
- //Шапка таблиці вирівнювання по центру жирним шрифтом
+ //выравнивание по центру жирным шрифтом
  ParagraphAlign(wdAlignParagraphCenter,w);
  FontBold(true,w);
  AddText(Utf8ToAnsi('СПИСОК № '+Edit2.Text+#13),w);
- AddText(Utf8ToAnsi('для зарахувань на карткові рахунки працівників облнаркодиспансера'+#13),w);
- AddText(Utf8ToAnsi('від зарплати за січень 2011 р.'+#13),w);
+ AddText(Utf8ToAnsi('для зачисления на карточные счета сотрудников организации'+#13),w);
+ AddText(Utf8ToAnsi('аванса за декабрь 2011 г.'+#13),w);
  FontBold(false,w);
  ParagraphAlign(wdAlignParagraphLeft,w);
- //створюємо таблицю 6 колонок 2 рядки (решта рядків додається в процесі формування)
- //і заповнюємо шапку
+ //создаем таблицу 6 колонок 2 строки (остальные строки добавлятся в процессе формирования автоматически)
+ //заполняем шапку
  CreateTable(6,2,w);
  AddText(Utf8ToAnsi('№ п/п'),w);
  SetColWidth(20,w);
@@ -192,23 +194,23 @@ begin
  AddText(Utf8ToAnsi('Таб. №'),w);
  SetColWidth(30,w);
  GotoRight(1,w);
- AddText(Utf8ToAnsi('№ рах.'),w);
+ AddText(Utf8ToAnsi('№ счета'),w);
  GotoRight(1,w);
- AddText(Utf8ToAnsi('П.І.П-б.'),w);
+ AddText(Utf8ToAnsi('Ф.И.О.'),w);
  SetColWidth(180,w);
  GotoRight(1,w);
- AddText(Utf8ToAnsi('Ід. код'),w);
+ AddText(Utf8ToAnsi('Ид. код'),w);
  SetColWidth(70,w);
  GotoRight(1,w);
- AddText(Utf8ToAnsi('Сума'),w);
+ AddText(Utf8ToAnsi('Сумма'),w);
  SetColWidth(90,w);
  GotoRight(1,w);
- //встановлюємо виборку ненульових сум
+ //устанавливаем выборку только тех людей, у кого есть начисления
  Dbf1.Filter:='RLSUM>0';
  Dbf1.Filtered:=true;
- //і йдемо на початок бази
+ //идем в начало таблицы
  Dbf1.First;
- //виводимо в циклі вибрані записи в таблицю
+ //выводим в цикле выбранные записи в таблицу
  for i:= 1 to Dbf1.ExactRecordCount do begin
   AddText(IntToStr(i)+'.',w);
   GotoRight(1,w);
@@ -233,29 +235,27 @@ begin
  end;
  //виводимо підсумки
   MergeCellsR(5,w);
-  AddText(Utf8ToAnsi('ВСЬОГО: '+FloatToStrF(sum,ffNumber,10,2)+' грн. ('+currency2Str(sum)+')'),w);
+  AddText(Utf8ToAnsi('ВСЕГО: '+FloatToStrF(sum,ffNumber,10,2)+' грн. ('+currency2Str(sum)+')'),w);
   ExitTable(w);
-  //підписуємо відомість
+  //подписываем ведомость
   AddText(#13#13,w);
   AddTabPosition(1,w);
   AddTabPosition(12,w);
-  AddText(Utf8ToAnsi(#9+'Головний лікар'+#9+'Ю.С.ШУГАЛЕЙ'+#13#13),w);
-  AddText(Utf8ToAnsi(#9+'Головний бухгалтер'+#9+'Л.О.БАЛАБАН'),w);
-  InsertFooter(Utf8ToAnsi('Демонстраційний приклад формування документу MS Word програмно на основі файла DBF'),w);
-  //зберігаємо документ
+  AddText(Utf8ToAnsi(#9+'Руководитель'+#9+'______________'+#13#13),w);
+  AddText(Utf8ToAnsi(#9+'Главный бухгалтер'+#9+'______________'),w);
+  InsertFooter(Utf8ToAnsi('Демонстрация формирования документа MS Word программно на основе файла DBF'),w);
+  //сохраняем документ
   SaveDocAs(Utf8ToAnsi(ExtractFilePath(Application.ExeName)+'список'+Edit2.Text+'.doc'),w);
-  //закриваємо ворд
+  //закрываем ворд
   CloseWord(w);
   w:=Unassigned;
-  //знімаємо фільтр з DBF
+  //снимаем фильтрацию таблицы
   Dbf1.Filtered:=false;
-  ShowMessage('Список сформовано і збережено в папку програми з іменем "'+'список'+Edit2.Text+'.doc"');
+  ShowMessage('Список сформирован и сохранен в папку программы с именем "'+'список'+Edit2.Text+'.doc"');
 end;
 
 procedure TForm1.Button3Click(Sender: TObject);
 begin
- INI.WriteBool('SECTION1','DOS CODEPAGE',CheckBox1.Checked);
- INI.WriteString('SECTION2','LISTNUM',Edit2.Text);
  Application.Terminate;
 end;
 
