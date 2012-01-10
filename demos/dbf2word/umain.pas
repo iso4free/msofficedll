@@ -160,7 +160,7 @@ begin
   end;
   //открыть DBF
   if OpenDialog1.FileName<>'' then begin
-   Dbf1.FilePathFull:=ExtractFilePath(OpenDialog1.FileName);
+   Dbf1.FilePathFull:=UTF8ToSys(ExtractFilePath(OpenDialog1.FileName));
    Dbf1.TableName:=Edit1.Text;
    Dbf1.Active:=true;
    Button2.Enabled:=true;
