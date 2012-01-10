@@ -49,7 +49,7 @@ begin
  SaveDocAs('testword.doc',w);
  CloseDoc(w);
  CloseWord(w);
- NewXlsDocument(_xl,true);
+ NewXlsDocument(_xl,false);
  SetCellValue(_xl,'A1','Текстовое значение');
  SetCellValue(_xl,'A2','пример вывода текста в ячейку');
  SetCellValue(_xl,'B1','Целочисельное значение');
@@ -61,4 +61,6 @@ begin
  SetCellValue(_xl,'E1','Деньги');
  SetCellValueFloat(_xl,'E2',123.45);
  SetCellValueFormat(_xl,'E2','0.00 грн.');
+ SetExcellVisible(_xl,true);
+ SaveXlsDocumentAs(_xl,'test.xls');
  end.
