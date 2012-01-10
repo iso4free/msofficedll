@@ -38,12 +38,11 @@
         <Filename Value="testdll.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="testdll"/>
-        <IsVisibleTab Value="True"/>
         <EditorIndex Value="0"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="41"/>
-        <CursorPos X="35" Y="63"/>
-        <UsageCount Value="48"/>
+        <TopLine Value="44"/>
+        <CursorPos X="1" Y="52"/>
+        <UsageCount Value="49"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
       </Unit0>
@@ -58,15 +57,16 @@
       <Unit2>
         <Filename Value="uofficedll.pas"/>
         <UnitName Value="uofficedll"/>
+        <IsVisibleTab Value="True"/>
         <EditorIndex Value="1"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="271"/>
-        <CursorPos X="1" Y="280"/>
+        <TopLine Value="257"/>
+        <CursorPos X="27" Y="266"/>
         <UsageCount Value="13"/>
         <Loaded Value="True"/>
       </Unit2>
     </Units>
-    <JumpHistory Count="14" HistoryIndex="13">
+    <JumpHistory Count="16" HistoryIndex="15">
       <Position1>
         <Filename Value="testdll.pas"/>
         <Caret Line="26" Column="44" TopLine="7"/>
@@ -123,6 +123,14 @@
         <Filename Value="uofficedll.pas"/>
         <Caret Line="290" Column="144" TopLine="283"/>
       </Position14>
+      <Position15>
+        <Filename Value="uofficedll.pas"/>
+        <Caret Line="258" Column="1" TopLine="253"/>
+      </Position15>
+      <Position16>
+        <Filename Value="testdll.pas"/>
+        <Caret Line="65" Column="29" TopLine="43"/>
+      </Position16>
     </JumpHistory>
   </ProjectOptions>
   <CompilerOptions>

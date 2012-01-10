@@ -484,12 +484,30 @@ end;
   xls.WorkBooks.Add;
  end;
 
+ procedure SetExcellVisible(var xls : Variant; visible : Boolean);StdCall;
+ {*Установить видимость Excell}
+ begin
+  xls.Visible := Visible;
+ end;
+
  procedure OpenXlsDocument(var xls : Variant; xlsfile : ShortString);StdCall;
  {*Открыть указанный документ}
  begin
   xls := CreateOleObject('Excel.Application');
   if xlsfile<>'' then xls.WorkBooks.Open(xlsfile);
   xls.Visible := true;
+ end;
+
+ procedure SaveXlsDocument(var xls : Variant);StdCall;
+ {*Сохранить текущий документ}
+ begin
+  xls.ActiveWorkBook.Save;
+ end;
+
+ procedure SaveXlsDocumentAs(var xls : Variant; xlsfile : ShortString);StdCall;
+ {*Сохранить текущий документ под указанным именем}
+ begin
+  xls.ActiveWorkBook.SaveAs(xlsfile);
  end;
 
  function GetXlsWorkBook(var xls : Variant; idx : Integer): Variant;StdCall;
@@ -650,9 +668,9 @@ CellTextOrientation,SetWordVisible,CheckWordVersion,SaveDocAs,CloseDoc,CloseWord
 PrintDialogWord,CreateTableEx,
 
 //Excel
-NewXlsDocument,OpenXlsDocument,GetXlsWorkBook,GetXlsWorkBookSheet,SetCellValue,
-SetCellValueInteger,SetCellValueFloat,SetCellValueDate,SetCellValueCurrency,
-SetCellValueFormat,
+NewXlsDocument,SetExcellVisible,OpenXlsDocument,SaveXlsDocument,SaveXlsDocumentAs,
+GetXlsWorkBook,GetXlsWorkBookSheet,SetCellValue,SetCellValueInteger,
+SetCellValueFloat,SetCellValueDate,SetCellValueCurrency,SetCellValueFormat,
 
 //Outlook
 OutLookConnect,OutLookNewFolder,OutLookNewContact,OutLookDisConnect;
