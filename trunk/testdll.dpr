@@ -61,4 +61,6 @@ begin
  SetCellValueFormat(_xl,'E2','0.00 грн.');
  SetExcellVisible(_xl,true);
  SaveXlsDocumentAs(_xl,'test.xls');
+ CloseXlsDocument(_xl);
+ CloseExcel(_xl);    
  end.

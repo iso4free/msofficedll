@@ -1,0 +1,348 @@
+<html>
+
+<head>
+<title> KOL Help: INDEX </title>
+<script language="JavaScript">
+  var ClassTreeState = 0;
+  var ViewUnitsSorted = 0;
+  var ViewClassSorted = 0;
+function getCtlTag(src)
+{
+  TRok = false
+  while("HTML" != src.tagName)
+  {
+    if("IMG" == src.tagName || "FONT" == src.tagName || "A" == src.tagName)
+      TRok = true
+    if("LI" == src.tagName)
+      return src
+    if("TR" == src.tagName)
+    {
+      if(TRok)
+        return src
+      return null
+    }
+    src = src.parentElement
+  }
+  return null
+}
+function dynOutlineEnabled(src)
+{
+  while ("HTML" != src.tagName)
+  {
+    if("UL" == src.tagName || "TABLE" == src.tagName)
+      if(null != src.getAttribute("dynoutline", false))
+        return true
+    src = src.parentElement
+  }
+  return false
+}
+function containedIn(src, dst)
+{
+  var lev = 1;
+  while("HTML" != src.tagName)
+  {
+     if(src == dst)
+       return true
+    if("TABLE" == src.tagName)
+      lev--
+    src = src.parentElement
+    if(lev <= 0)
+      return false
+  }
+  return false
+}
+function doExpandCollapse(src, disp)
+{
+  var idx = src.sourceIndex+1
+  while(idx < document.all.length && containedIn(document.all[idx].parentElement, src))
+  {
+    srcTmp = document.all[idx]
+    tag = srcTmp.tagName
+    if ("UL" == tag || "TABLE" == tag)
+    {
+      if(disp == "?")
+	   disp = srcTmp.style.display
+ 	if( disp == "" )
+      {
+        if(srcTmp.style.display == "")
+        {
+          srcTmp.style.display = "none"
+          doExpandCollapse( srcTmp, "" )
+        }
+      }
+	 else
+      {
+	 if(srcTmp.style.display != "")
+         srcTmp.style.display = ""
+	}
+    }
+    idx++;
+  }
+}
+function doOutline()
+{
+  var ms = navigator.appVersion.indexOf("MSIE");
+  ie4 = (ms>0) && (parseInt(navigator.appVersion.substring(ms+5, ms+6)) >= 4);
+  if(!ie4)
+     return;
+  var src = event.srcElement
+  src = getCtlTag(src)
+  if (null == src)
+     return;
+  if(!dynOutlineEnabled(src))
+    return;
+  doExpandCollapse( src, "?" );
+  ClassTreeState = 0
+}
+function ShowByNames()
+{
+  document.all[ "ByDependances" ].style.display = "none";
+  document.all[ "ByNames" ].style.display = "";
+  ViewUnitsSorted = 1;
+}
+function ShowByDependances()
+{
+  document.all[ "ByDependances" ].style.display = "";
+  document.all[ "ByNames" ].style.display = "none";
+  ViewUnitsSorted = 0;
+}
+function SortClasses()
+{
+  document.all[ "ClassesByName" ].style.display = "";
+  document.all[ "ClassTree" ].style.display = "none";
+  ViewClassSorted = 1;
+}
+function ShowClassTree()
+{
+  document.all[ "ClassesByName" ].style.display = "none";
+  document.all[ "ClassTree" ].style.display = "";
+  ViewClassSorted = 0;
+}
+function ExpandCollapseAll()
+{
+  last = document.all[ "LastClassNode"].sourceIndex;
+  for( i=document.all[ "FirstClassNode" ].sourceIndex;i<last;i++ )
+  {
+    src = document.all[ i ];
+    tag = src.tagName
+    if("TABLE"==tag)
+    {
+      if(ClassTreeState!=1)
+      {
+        document.all[ i ].style.display="";
+      }
+      else
+      {
+        document.all[ i ].style.display="none";
+      }
+    }
+  }
+  if(ClassTreeState==1)
+    ClassTreeState=2
+  else
+    ClassTreeState=1;
+}
+function SaveState()
+{
+  dt = new Date(199,0,1);
+  ck = ClassTreeState + 10 * ViewUnitsSorted + 100 * ViewClassSorted;
+  document.cookie = "state=" + ck + "; " + dt.toGMTString();
+}
+function RestoreState()
+{
+  ck = document.cookie;
+  i = ck.indexOf( "=" );
+  if(i>0)
+  {
+    ck = ck.substring( i+1 );
+    i = ck.indexOf( ";" );
+    if(i>0)
+      ck = ck.substring( 0, i );
+    if( ck >= 100 )
+      SortClasses();
+    ck = ck % 100;
+    if( ck >= 10 )
+      ShowByNames();
+    ck = ck % 10;
+    while(ck!=ClassTreeState)
+    {
+      ExpandCollapseAll();
+      if(!ck)
+        break;
+    }
+  }
+}
+</script>
+</head>
+
+<body bgcolor="#FFFFEF" text="#000000" link="#008080" vlink="#008000" alink="#808000" onUnload="SaveState();" onLoad="RestoreState();">
+
+<h1 align="center"><font face="Arial" color="#FF8080">KOL Help</font></h1>
+<hr>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td valign="top" id="ByDependances"><h2 align="center">
+&nbsp;<font face="Wingdings" size=7 onclick="ShowByNames();">&#222;</font>&nbsp;
+<font color="#FF8080" face="Arial">Units</font></h2>
+    <ul compact>
+        <li><a href=uofficedll_pas.htm>uofficedll.pas</a></li>
+    </ul>
+    </td>
+    <td valign="top" id="ByNames" style="display:none"><h2 align="center">
+&nbsp;<font face="Wingdings" size=7 onclick="ShowByDependances();">&#222;</font>&nbsp;
+<font color="#FF8080" face="Arial">Units</font></h2>
+    <ul compact>
+        <li><a href=uofficedll_pas.htm>uofficedll.pas</a></li>
+    </ul>
+    </td>
+    <td valign="top" id="ClassTree">
+      <table border=0><tr>
+      <td valign=top width=40>
+&nbsp;<font face="Wingdings" size=7 onclick="ExpandCollapseAll();">&#49;</font>&nbsp;
+</td>
+      <td valign=top><h2 align="center"><font face="Arial" color="#FF8080">Classes and Objects</font></h2></td>
+      <td valign=top>
+&nbsp;<font face="Wingdings" size=7 onclick="SortClasses();">&#202;</font>&nbsp;
+</td>
+      </tr></table>
+<table dynoutline border=0 cellpadding=0 cellspacing=0 width="100%">
+</table>
+    </td>
+    <td valign="top" id="ClassesByName" style="display:none">
+      <table border=0><tr>
+      <td valign=top width=40>&nbsp;</td>
+      <td valign=top><h2 align="center"><font face="Arial" color="#FF8080">Classes and Objects</font></h2></td>
+      <td valign=top>
+&nbsp;<font face="Terminal" size=7 onclick="ShowClassTree();">&#213;&#202;&#184;</font>&nbsp;
+</td>
+      </tr></table>
+      <ul>
+      </ul>
+    </td>
+  </tr>
+</table>
+<hr>
+<a name="Glossary"></a><h2 align="center"><font color="#FF8080" face="Arial">Glossary</font></h2>
+<p align=center><font face="Arial"><b>
+[&nbsp;<a href=#glossary_A>A</a>&nbsp;] [&nbsp;B&nbsp;] 
+[&nbsp;<a href=#glossary_C>C</a>&nbsp;] 
+[&nbsp;<a href=#glossary_D>D</a>&nbsp;] 
+[&nbsp;<a href=#glossary_E>E</a>&nbsp;] 
+[&nbsp;<a href=#glossary_F>F</a>&nbsp;] 
+[&nbsp;<a href=#glossary_G>G</a>&nbsp;] 
+[&nbsp;<a href=#glossary_H>H</a>&nbsp;] 
+[&nbsp;<a href=#glossary_I>I</a>&nbsp;] [&nbsp;J&nbsp;] [&nbsp;K&nbsp;] [&nbsp;L&nbsp;] 
+[&nbsp;<a href=#glossary_M>M</a>&nbsp;] <br>
+[&nbsp;<a href=#glossary_N>N</a>&nbsp;] 
+[&nbsp;<a href=#glossary_O>O</a>&nbsp;] 
+[&nbsp;<a href=#glossary_P>P</a>&nbsp;] [&nbsp;Q&nbsp;] [&nbsp;R&nbsp;] 
+[&nbsp;<a href=#glossary_S>S</a>&nbsp;] [&nbsp;T&nbsp;] 
+[&nbsp;<a href=#glossary_U>U</a>&nbsp;] [&nbsp;V&nbsp;] [&nbsp;W&nbsp;] [&nbsp;X&nbsp;] [&nbsp;Y&nbsp;] [&nbsp;Z&nbsp;] </b></font></p>
+<p>
+<a name=glossary_A></a>
+<a href="uofficedll_pas.htm#addparagraph"><b>AddParagraph</b></a> (<a href="uofficedll_pas.htm">uofficedll.pas</a> )<br>
+<a href="uofficedll_pas.htm#addtabposition"><b>AddTabPosition</b></a> (<a href="uofficedll_pas.htm">uofficedll.pas</a> )<br>
+<a href="uofficedll_pas.htm#addtext"><b>AddText</b></a> (<a href="uofficedll_pas.htm">uofficedll.pas</a> )<br>
+<br>
+<a name=glossary_C></a>
+<a href="uofficedll_pas.htm#celltextorientation"><b>CellTextOrientation</b></a> (<a href="uofficedll_pas.htm">uofficedll.pas</a> )<br>
+<a href="uofficedll_pas.htm#centimeterstopoints"><b>CentimetersToPoints</b></a> (<a href="uofficedll_pas.htm">uofficedll.pas</a> )<br>
+<a href="uofficedll_pas.htm#checkwordversion"><b>CheckWordVersion</b></a> (<a href="uofficedll_pas.htm">uofficedll.pas</a> )<br>
+<a href="uofficedll_pas.htm#clearalltabs"><b>ClearAllTabs</b></a> (<a href="uofficedll_pas.htm">uofficedll.pas</a> )<br>
+<a href="uofficedll_pas.htm#closedoc"><b>CloseDoc</b></a> (<a href="uofficedll_pas.htm">uofficedll.pas</a> )<br>
+<a href="uofficedll_pas.htm#closeexcel"><b>CloseExcel</b></a> (<a href="uofficedll_pas.htm">uofficedll.pas</a> )<br>
+<a href="uofficedll_pas.htm#closeword"><b>CloseWord</b></a> (<a href="uofficedll_pas.htm">uofficedll.pas</a> )<br>
+<a href="uofficedll_pas.htm#closexlsdocument"><b>CloseXlsDocument</b></a> (<a href="uofficedll_pas.htm">uofficedll.pas</a> )<br>
+<a href="uofficedll_pas.htm#createtable"><b>CreateTable</b></a> (<a href="uofficedll_pas.htm">uofficedll.pas</a> )<br>
+<a href="uofficedll_pas.htm#createtableex"><b>CreateTableEx</b></a> (<a href="uofficedll_pas.htm">uofficedll.pas</a> )<br>
+<br>
+<a name=glossary_D></a>
+<a href="uofficedll_pas.htm#defaulttabpos"><b>DefaultTabPos</b></a> (<a href="uofficedll_pas.htm">uofficedll.pas</a> )<br>
+<a href="uofficedll_pas.htm#deletecol"><b>DeleteCol</b></a> (<a href="uofficedll_pas.htm">uofficedll.pas</a> )<br>
+<a href="uofficedll_pas.htm#deleterow"><b>DeleteRow</b></a> (<a href="uofficedll_pas.htm">uofficedll.pas</a> )<br>
+<br>
+<a name=glossary_E></a>
+<a href="uofficedll_pas.htm#exittable"><b>ExitTable</b></a> (<a href="uofficedll_pas.htm">uofficedll.pas</a> )<br>
+<br>
+<a name=glossary_F></a>
+<a href="uofficedll_pas.htm#fontbold"><b>FontBold</b></a> (<a href="uofficedll_pas.htm">uofficedll.pas</a> )<br>
+<a href="uofficedll_pas.htm#fontcolor"><b>FontColor</b></a> (<a href="uofficedll_pas.htm">uofficedll.pas</a> )<br>
+<a href="uofficedll_pas.htm#fontitalic"><b>FontItalic</b></a> (<a href="uofficedll_pas.htm">uofficedll.pas</a> )<br>
+<a href="uofficedll_pas.htm#fontname"><b>FontName</b></a> (<a href="uofficedll_pas.htm">uofficedll.pas</a> )<br>
+<a href="uofficedll_pas.htm#fontposition"><b>FontPosition</b></a> (<a href="uofficedll_pas.htm">uofficedll.pas</a> )<br>
+<a href="uofficedll_pas.htm#fontscaling"><b>FontScaling</b></a> (<a href="uofficedll_pas.htm">uofficedll.pas</a> )<br>
+<a href="uofficedll_pas.htm#fontshadowed"><b>FontShadowed</b></a> (<a href="uofficedll_pas.htm">uofficedll.pas</a> )<br>
+<a href="uofficedll_pas.htm#fontsize"><b>FontSize</b></a> (<a href="uofficedll_pas.htm">uofficedll.pas</a> )<br>
+<a href="uofficedll_pas.htm#fontspacing"><b>FontSpacing</b></a> (<a href="uofficedll_pas.htm">uofficedll.pas</a> )<br>
+<a href="uofficedll_pas.htm#fontsubscript"><b>FontSubScript</b></a> (<a href="uofficedll_pas.htm">uofficedll.pas</a> )<br>
+<a href="uofficedll_pas.htm#fontsuperscript"><b>FontSuperScript</b></a> (<a href="uofficedll_pas.htm">uofficedll.pas</a> )<br>
+<a href="uofficedll_pas.htm#fontunderlined"><b>FontUnderlined</b></a> (<a href="uofficedll_pas.htm">uofficedll.pas</a> )<br>
+<br>
+<a name=glossary_G></a>
+<a href="uofficedll_pas.htm#getxlsworkbook"><b>GetXlsWorkBook</b></a> (<a href="uofficedll_pas.htm">uofficedll.pas</a> )<br>
+<a href="uofficedll_pas.htm#getxlsworkbooksheet"><b>GetXlsWorkBookSheet</b></a> (<a href="uofficedll_pas.htm">uofficedll.pas</a> )<br>
+<a href="uofficedll_pas.htm#gotodown"><b>GotoDown</b></a> (<a href="uofficedll_pas.htm">uofficedll.pas</a> )<br>
+<a href="uofficedll_pas.htm#gotoleft"><b>GotoLeft</b></a> (<a href="uofficedll_pas.htm">uofficedll.pas</a> )<br>
+<a href="uofficedll_pas.htm#gotoright"><b>GotoRight</b></a> (<a href="uofficedll_pas.htm">uofficedll.pas</a> )<br>
+<a href="uofficedll_pas.htm#gotoup"><b>GotoUp</b></a> (<a href="uofficedll_pas.htm">uofficedll.pas</a> )<br>
+<br>
+<a name=glossary_H></a>
+<a href="uofficedll_pas.htm#hfdistance"><b>HFDistance</b></a> (<a href="uofficedll_pas.htm">uofficedll.pas</a> )<br>
+<br>
+<a name=glossary_I></a>
+<a href="uofficedll_pas.htm#insertfooter"><b>InsertFooter</b></a> (<a href="uofficedll_pas.htm">uofficedll.pas</a> )<br>
+<a href="uofficedll_pas.htm#insertheader"><b>InsertHeader</b></a> (<a href="uofficedll_pas.htm">uofficedll.pas</a> )<br>
+<br>
+<a name=glossary_M></a>
+<a href="uofficedll_pas.htm#mergecellsd"><b>MergeCellsD</b></a> (<a href="uofficedll_pas.htm">uofficedll.pas</a> )<br>
+<a href="uofficedll_pas.htm#mergecellsr"><b>MergeCellsR</b></a> (<a href="uofficedll_pas.htm">uofficedll.pas</a> )<br>
+<br>
+<a name=glossary_N></a>
+<a href="uofficedll_pas.htm#newdocument"><b>NewDocument</b></a> (<a href="uofficedll_pas.htm">uofficedll.pas</a> )<br>
+<a href="uofficedll_pas.htm#newpage"><b>NewPage</b></a> (<a href="uofficedll_pas.htm">uofficedll.pas</a> )<br>
+<a href="uofficedll_pas.htm#newxlsdocument"><b>NewXlsDocument</b></a> (<a href="uofficedll_pas.htm">uofficedll.pas</a> )<br>
+<br>
+<a name=glossary_O></a>
+<a href="uofficedll_pas.htm#openxlsdocument"><b>OpenXlsDocument</b></a> (<a href="uofficedll_pas.htm">uofficedll.pas</a> )<br>
+<a href="uofficedll_pas.htm#outlookconnect"><b>OutLookConnect</b></a> (<a href="uofficedll_pas.htm">uofficedll.pas</a> )<br>
+<a href="uofficedll_pas.htm#outlookdisconnect"><b>OutLookDisConnect</b></a> (<a href="uofficedll_pas.htm">uofficedll.pas</a> )<br>
+<a href="uofficedll_pas.htm#outlooknewcontact"><b>OutLookNewContact</b></a> (<a href="uofficedll_pas.htm">uofficedll.pas</a> )<br>
+<a href="uofficedll_pas.htm#outlooknewfolder"><b>OutLookNewFolder</b></a> (<a href="uofficedll_pas.htm">uofficedll.pas</a> )<br>
+<br>
+<a name=glossary_P></a>
+<a href="uofficedll_pas.htm#pagealign"><b>PageAlign</b></a> (<a href="uofficedll_pas.htm">uofficedll.pas</a> )<br>
+<a href="uofficedll_pas.htm#pagemargins"><b>PageMargins</b></a> (<a href="uofficedll_pas.htm">uofficedll.pas</a> )<br>
+<a href="uofficedll_pas.htm#pageorientation"><b>PageOrientation</b></a> (<a href="uofficedll_pas.htm">uofficedll.pas</a> )<br>
+<a href="uofficedll_pas.htm#pagesize"><b>PageSize</b></a> (<a href="uofficedll_pas.htm">uofficedll.pas</a> )<br>
+<a href="uofficedll_pas.htm#paragraphalign"><b>ParagraphAlign</b></a> (<a href="uofficedll_pas.htm">uofficedll.pas</a> )<br>
+<a href="uofficedll_pas.htm#paragraphfirstline"><b>ParagraphFirstLine</b></a> (<a href="uofficedll_pas.htm">uofficedll.pas</a> )<br>
+<a href="uofficedll_pas.htm#paragraphindents"><b>ParagraphIndents</b></a> (<a href="uofficedll_pas.htm">uofficedll.pas</a> )<br>
+<a href="uofficedll_pas.htm#paragraphlinespace"><b>ParagraphLineSpace</b></a> (<a href="uofficedll_pas.htm">uofficedll.pas</a> )<br>
+<a href="uofficedll_pas.htm#paragraphspaces"><b>ParagraphSpaces</b></a> (<a href="uofficedll_pas.htm">uofficedll.pas</a> )<br>
+<a href="uofficedll_pas.htm#printdialogword"><b>PrintDialogWord</b></a> (<a href="uofficedll_pas.htm">uofficedll.pas</a> )<br>
+<br>
+<a name=glossary_S></a>
+<a href="uofficedll_pas.htm#savedocas"><b>SaveDocAs</b></a> (<a href="uofficedll_pas.htm">uofficedll.pas</a> )<br>
+<a href="uofficedll_pas.htm#savexlsdocument"><b>SaveXlsDocument</b></a> (<a href="uofficedll_pas.htm">uofficedll.pas</a> )<br>
+<a href="uofficedll_pas.htm#savexlsdocumentas"><b>SaveXlsDocumentAs</b></a> (<a href="uofficedll_pas.htm">uofficedll.pas</a> )<br>
+<a href="uofficedll_pas.htm#setcellvalue"><b>SetCellValue</b></a> (<a href="uofficedll_pas.htm">uofficedll.pas</a> )<br>
+<a href="uofficedll_pas.htm#setcellvaluecurrency"><b>SetCellValueCurrency</b></a> (<a href="uofficedll_pas.htm">uofficedll.pas</a> )<br>
+<a href="uofficedll_pas.htm#setcellvaluedate"><b>SetCellValueDate</b></a> (<a href="uofficedll_pas.htm">uofficedll.pas</a> )<br>
+<a href="uofficedll_pas.htm#setcellvaluefloat"><b>SetCellValueFloat</b></a> (<a href="uofficedll_pas.htm">uofficedll.pas</a> )<br>
+<a href="uofficedll_pas.htm#setcellvalueformat"><b>SetCellValueFormat</b></a> (<a href="uofficedll_pas.htm">uofficedll.pas</a> )<br>
+<a href="uofficedll_pas.htm#setcellvalueinteger"><b>SetCellValueInteger</b></a> (<a href="uofficedll_pas.htm">uofficedll.pas</a> )<br>
+<a href="uofficedll_pas.htm#setcolwidth"><b>SetColWidth</b></a> (<a href="uofficedll_pas.htm">uofficedll.pas</a> )<br>
+<a href="uofficedll_pas.htm#setexcellvisible"><b>SetExcellVisible</b></a> (<a href="uofficedll_pas.htm">uofficedll.pas</a> )<br>
+<a href="uofficedll_pas.htm#setonpage"><b>SetOnPage</b></a> (<a href="uofficedll_pas.htm">uofficedll.pas</a> )<br>
+<a href="uofficedll_pas.htm#setrowheight"><b>SetRowHeight</b></a> (<a href="uofficedll_pas.htm">uofficedll.pas</a> )<br>
+<a href="uofficedll_pas.htm#setwordvisible"><b>SetWordVisible</b></a> (<a href="uofficedll_pas.htm">uofficedll.pas</a> )<br>
+<br>
+<a name=glossary_U></a>
+<a href="uofficedll_pas.htm"><b>uofficedll.pas</b></a><br>
+</p>
+<hr>
+<p align="center">[&nbsp;<a href="http://xcl.cjb.net">KOL&nbsp;Home</a>&nbsp;]</p>
+<p align="center"><font face="Comic Sans MS"><small>This help is generated 12-Jan-2012 by KOL Help generator, (C) 2000-2001 by Vladimir Kladov<br>Modified (C) 2003 by Alexander Bartov</small></font></p>
+</body>
+</html>

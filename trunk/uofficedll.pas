@@ -259,10 +259,16 @@ Procedure CreateTableEx(Col,Row : Integer; DefaultTableBehavior,AutoFitBehavior 
  procedure OpenXlsDocument(var xls : Variant; xlsfile : ShortString);StdCall; external 'msofficedll.dll' name 'OpenXlsDocument';
  {*Открыть указанную книгу}
 
+ procedure CloseXlsDocument(var xls : Variant);StdCall; external 'msofficedll.dll' name 'CloseXlsDocument';
+ {*Закрыть текущую книгу}
+
+ function CloseExcel(var xls : Variant):Boolean;StdCall; external 'msofficedll.dll' name 'CloseExcel';
+ {*Закрыть Excel}
+
  procedure SaveXlsDocument(var xls : Variant);StdCall; external 'msofficedll.dll' name 'SaveXlsDocument';
  {*Сохранить текущую книгу}
 
- procedure SaveXlsDocumentAs(var xls : Variant; xlsfile : ShortString);StdCall; external 'msofficedll.dll' name 'SaveXlsDocumentAs';
+ function SaveXlsDocumentAs(var xls : Variant; xlsfile : ShortString):Boolean;StdCall; external 'msofficedll.dll' name 'SaveXlsDocumentAs';
  {*Сохранить текущую книгу под указанным именем}
 
  function GetXlsWorkBook(var xls : Variant; idx : Integer): Variant;StdCall; external 'msofficedll.dll' name 'GetXlsWorkBook';
