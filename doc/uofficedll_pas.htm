@@ -1,0 +1,518 @@
+<html>
+
+<head>
+<title>KOL Help: unit uofficedll.pas</title>
+</head>
+
+<body bgcolor="#FFFFEF" text="#000000" link="#008080" vlink="#008000" alink="#808000">
+
+<h1 align="center">
+<font face="Arial" color="#FF8080">unit uofficedll.pas</font>
+</h1>
+<hr>
+<p>
+Динамическая библиотека для автоматизации создания отчётов в M$ Word XP/2003 в Delphi/Lazarus.
+Для использования необходимо в проект подключить модуль uofficedll.pas
+(в Lazarus также необходимо подключить модуль Variants и модуль ComObj).
+</p>
+<h2 align="center"><font face="Arial" color="#FF8080">Content</font></h2>
+<a name="centimeterstopoints"></a>
+<p>
+<font face="Courier" color="#800080"><b>function</b> <font color="#808000"><b>CentimetersToPoints</b></font>( cm: Real ): Real; stdcall; external 'msofficedll.dll' name 'CentimetersToPoints';</font>
+<br>
+Переводит сантиметры в точки
+</p>
+<a name="newdocument"></a>
+<p>
+<font face="Courier" color="#800080"><b>procedure</b> <font color="#808000"><b>NewDocument</b></font>( <b>var</b> Wrd: Variant; visible: <b>Boolean</b> ); stdcall; external 'msofficedll.dll' name 'NewDocument';</font>
+<br>
+Создает новый документ.  Параметр visible указывает, будет ли отображаться окно Word'а на экране
+</p>
+<a name="pagemargins"></a>
+<p>
+<font face="Courier" color="#800080"><b>procedure</b> <font color="#808000"><b>PageMargins</b></font>( l, r, t, b: Single; <b>var</b> wrd: Variant ); stdcall; external 'msofficedll.dll' name 'PageMargins';</font>
+<br>
+Устанавливает поля страницы
+</p>
+<a name="pageorientation"></a>
+<p>
+<font face="Courier" color="#800080"><b>procedure</b> <font color="#808000"><b>PageOrientation</b></font>( orientation: <b>Integer</b>; <b>var</b> wrd: Variant ); stdcall; external 'msofficedll.dll' name 'PageOrientation';</font>
+<br>
+Устанавливает альбомную/книжную ориентацию страницы.
+wdOrientPortrait = 0;     //книжна
+wdOrientLandscape = 1;    //альбомна
+</p>
+<a name="hfdistance"></a>
+<p>
+<font face="Courier" color="#800080"><b>procedure</b> <font color="#808000"><b>HFDistance</b></font>( h, f: Single; <b>var</b> wrd: Variant ); stdcall; external 'msofficedll.dll' name 'HFDistance';</font>
+<br>
+Устанавливает отступы для верхнего и нижнего колонтитулов
+</p>
+<a name="pagesize"></a>
+<p>
+<font face="Courier" color="#800080"><b>Procedure</b> <font color="#808000"><b>PageSize</b></font>( w, h: Single; <b>var</b> wrd: Variant ); stdcall; external 'msofficedll.dll' name 'PageSize';</font>
+<br>
+Устанавливает размер страницы в сантиметрах. Для А4 w=29.7, h=21
+</p>
+<a name="setonpage"></a>
+<p>
+<font face="Courier" color="#800080"><b>procedure</b> <font color="#808000"><b>SetOnPage</b></font>( style: <b>Integer</b>; <b>var</b> Wrd: Variant ); stdcall; external 'msofficedll.dll' name 'SetOnPage';</font>
+<br>
+Устанавливает количество и размещение листов на странице.
+wdNormalPage = 0;   //1 к 1 - стандартно
+wdTwoOnOne = 1;     //2 стор. на 1
+wdBookFold = 2;     //брошюра
+</p>
+<a name="pagealign"></a>
+<p>
+<font face="Courier" color="#800080"><b>procedure</b> <font color="#808000"><b>PageAlign</b></font>( align: <b>Integer</b>; <b>var</b> wrd: Variant ); stdcall; external 'msofficedll.dll' name 'PageAlign';</font>
+<br>
+Устанавливает вертикальное выравнивание текста на странице.
+wdAlignVerticalTop = 0;       //по верхнему краю
+wdAlignVerticalCenter = 1;    //по центру
+wdAlignVerticalJustify = 2;   //разтянуть по висоте
+wdAlignVerticalBottom = 3;    //по нижнему краю
+</p>
+<a name="newpage"></a>
+<p>
+<font face="Courier" color="#800080"><b>procedure</b> <font color="#808000"><b>NewPage</b></font>( wrd: Variant ); stdcall; external 'msofficedll.dll' name 'NewPage';</font>
+<br>
+Вставить разрыв страницы в документ
+</p>
+<a name="fontname"></a>
+<p>
+<font face="Courier" color="#800080"><b>procedure</b> <font color="#808000"><b>FontName</b></font>( name: ShortString; <b>var</b> wrd: Variant ); stdcall; external 'msofficedll.dll' name 'FontName';</font>
+<br>
+Устанавливает название шрифта (напр. 'Courier New')
+</p>
+<a name="fontsize"></a>
+<p>
+<font face="Courier" color="#800080"><b>procedure</b> <font color="#808000"><b>FontSize</b></font>( sz: <b>Integer</b>; <b>var</b> Wrd: Variant ); stdcall; external 'msofficedll.dll' name 'FontSize';</font>
+<br>
+Устанавливает размер для текущего шрифта
+</p>
+<a name="fontbold"></a>
+<p>
+<font face="Courier" color="#800080"><b>procedure</b> <font color="#808000"><b>FontBold</b></font>( Bold: <b>Boolean</b>; <b>var</b> Wrd: Variant ); stdcall; external 'msofficedll.dll' name 'FontBold';</font>
+<br>
+Устанавливает жирность для текущего шрифта
+</p>
+<a name="fontitalic"></a>
+<p>
+<font face="Courier" color="#800080"><b>procedure</b> <font color="#808000"><b>FontItalic</b></font>( Italic: <b>Boolean</b>; <b>var</b> Wrd: Variant ); stdcall; external 'msofficedll.dll' name 'FontItalic';</font>
+<br>
+Устанавливает курсив для текущего шрифта
+</p>
+<a name="fontunderlined"></a>
+<p>
+<font face="Courier" color="#800080"><b>procedure</b> <font color="#808000"><b>FontUnderlined</b></font>( underlined: <b>Boolean</b>; <b>var</b> wrd: Variant ); stdcall; external 'msofficedll.dll' name 'FontUnderlined';</font>
+<br>
+Устанавливает подчеркивание для текущего шрифта
+</p>
+<a name="fontshadowed"></a>
+<p>
+<font face="Courier" color="#800080"><b>procedure</b> <font color="#808000"><b>FontShadowed</b></font>( Shadowed: <b>Boolean</b>; <b>var</b> Wrd: Variant ); stdcall; external 'msofficedll.dll' name 'FontShadowed';</font>
+<br>
+Устанавливает тень для текущего шрифта
+</p>
+<a name="fontcolor"></a>
+<p>
+<font face="Courier" color="#800080"><b>procedure</b> <font color="#808000"><b>FontColor</b></font>( Color: <b>Integer</b>; <b>var</b> Wrd: Variant ); stdcall; external 'msofficedll.dll' name 'FontColor';</font>
+<br>
+Устанавливает цвет для текущего  шрифта
+wdAuto = 0;
+wdBlack = 1;
+wdBlue = 2;
+wdTurquoise = 3;
+wdBrightGreen = 4;
+wdPink = 5;
+wdRed = 6;
+wdYellow = 7;
+wdWhite = 8;
+wdDarkBlue = 9;
+wdTeal = 10;
+wdGreen = 11;
+wdViolet = 12;
+wdDarkRed = 13;
+wdDarkYellow = 14;
+wdGray50 = 15;
+wdGray25 = 16;
+wdByAuthor = -1;
+wdNoHighlight = 0;
+</p>
+<a name="fontsuperscript"></a>
+<p>
+<font face="Courier" color="#800080"><b>procedure</b> <font color="#808000"><b>FontSuperScript</b></font>( super: <b>Boolean</b>; <b>var</b> Wrd: Variant ); stdcall; external 'msofficedll.dll' name 'FontSuperScript';</font>
+<br>
+Устанавливает верхние индексы
+</p>
+<a name="fontsubscript"></a>
+<p>
+<font face="Courier" color="#800080"><b>procedure</b> <font color="#808000"><b>FontSubScript</b></font>( sub: <b>Boolean</b>; <b>var</b> Wrd: Variant ); stdcall; external 'msofficedll.dll' name 'FontSubScript';</font>
+<br>
+Устанавливает нижние индексы
+</p>
+<a name="fontspacing"></a>
+<p>
+<font face="Courier" color="#800080"><b>procedure</b> <font color="#808000"><b>FontSpacing</b></font>( spacing: Single; <b>var</b> Wrd: Variant ); stdcall; external 'msofficedll.dll' name 'FontSpacing';</font>
+<br>
+Устанавливает межсимвольный интервал: 1, 1.5 и т.д.
+</p>
+<a name="fontscaling"></a>
+<p>
+<font face="Courier" color="#800080"><b>procedure</b> <font color="#808000"><b>FontScaling</b></font>( scaling: <b>Integer</b>; <b>var</b> Wrd: Variant ); stdcall; external 'msofficedll.dll' name 'FontScaling';</font>
+<br>
+Установливает масштаб для текущего шрифта в %
+</p>
+<a name="fontposition"></a>
+<p>
+<font face="Courier" color="#800080"><b>procedure</b> <font color="#808000"><b>FontPosition</b></font>( position: Single; <b>var</b> Wrd: Variant ); stdcall; external 'msofficedll.dll' name 'FontPosition';</font>
+<br>
+Устанавливает смещение текста вверх (положительные значения)
+или вниз (отрицалельные значения) в пт
+</p>
+<a name="addtext"></a>
+<p>
+<font face="Courier" color="#800080"><b>procedure</b> <font color="#808000"><b>AddText</b></font>( s: ShortString; <b>var</b> wrd: Variant ); stdcall; external 'msofficedll.dll' name 'AddText';</font>
+<br>
+Вставить строку
+</p>
+<a name="addparagraph"></a>
+<p>
+<font face="Courier" color="#800080"><b>procedure</b> <font color="#808000"><b>AddParagraph</b></font>( <b>var</b> wrd: Variant ); stdcall; external 'msofficedll.dll' name 'AddParagraph';</font>
+<br>
+Начать новый абзац
+</p>
+<a name="paragraphalign"></a>
+<p>
+<font face="Courier" color="#800080"><b>procedure</b> <font color="#808000"><b>ParagraphAlign</b></font>( align: <b>Integer</b>; <b>var</b> Wrd: Variant ); stdcall; external 'msofficedll.dll' name 'ParagraphAlign';</font>
+<br>
+Установить выравнивание абзаца по ширине
+wdAlignParagraphLeft = 0;
+wdAlignParagraphCenter = 1;
+wdAlignParagraphRight = 2;
+wdAlignParagraphJustify = 3;
+</p>
+<a name="paragraphlinespace"></a>
+<p>
+<font face="Courier" color="#800080"><b>procedure</b> <font color="#808000"><b>ParagraphLineSpace</b></font>( space: <b>Integer</b>; <b>var</b> wrd: Variant ); stdcall; external 'msofficedll.dll' name 'ParagraphLineSpace';</font>
+<br>
+Установить междустрочный интервал:
+wdLineSpaceSingle = 0;
+wdLineSpace1pt5 = 1;
+wdLineSpaceDouble = 2;
+wdLineSpaceAtLeast = 3;
+wdLineSpaceExactly = 4;
+wdLineSpaceMultiple = 5;
+</p>
+<a name="paragraphindents"></a>
+<p>
+<font face="Courier" color="#800080"><b>procedure</b> <font color="#808000"><b>ParagraphIndents</b></font>( l, r: Single; <b>var</b> wrd: Variant ); stdcall; external 'msofficedll.dll' name 'ParagraphIndents';</font>
+<br>
+Установить отступы абзаца слева и справа (в см)
+</p>
+<a name="paragraphspaces"></a>
+<p>
+<font face="Courier" color="#800080"><b>procedure</b> <font color="#808000"><b>ParagraphSpaces</b></font>( top, bottom: Single; <b>var</b> wrd: Variant ); stdcall; external 'msofficedll.dll' name 'ParagraphSpaces';</font>
+<br>
+Установить отступы абзаца сверху и снизу
+</p>
+<a name="paragraphfirstline"></a>
+<p>
+<font face="Courier" color="#800080"><b>Procedure</b> <font color="#808000"><b>ParagraphFirstLine</b></font>( indent: Single; <b>var</b> wrd: Variant ); stdcall; external 'msofficedll.dll' name 'ParagraphFirstLine';</font>
+<br>
+Установить отступ первой строки абзаца (в см)
+</p>
+<a name="addtabposition"></a>
+<p>
+<font face="Courier" color="#800080"><b>procedure</b> <font color="#808000"><b>AddTabPosition</b></font>( pos: Single; <b>var</b> wrd: Variant ); stdcall; external 'msofficedll.dll' name 'AddTabPosition';</font>
+<br>
+Вставить позицию табуляции в pos см
+</p>
+<a name="defaulttabpos"></a>
+<p>
+<font face="Courier" color="#800080"><b>procedure</b> <font color="#808000"><b>DefaultTabPos</b></font>( pos: Single; <b>var</b> wrd: Variant ); stdcall; external 'msofficedll.dll' name 'DefaultTabPos';</font>
+<br>
+Установить позицию табуляции по умолчанию в pos см
+</p>
+<a name="clearalltabs"></a>
+<p>
+<font face="Courier" color="#800080"><b>procedure</b> <font color="#808000"><b>ClearAllTabs</b></font>( <b>var</b> wrd: Variant ); stdcall; external 'msofficedll.dll' name 'ClearAllTabs';</font>
+<br>
+Очистить все позиции табуляции
+</p>
+<a name="createtable"></a>
+<p>
+<font face="Courier" color="#800080"><b>procedure</b> <font color="#808000"><b>CreateTable</b></font>( Col, Row: <b>Integer</b>; <b>var</b> wrd: Variant ); stdcall; external 'msofficedll.dll' name 'CreateTable';</font>
+<br>
+Создать таблицу с атрибутами по умолчанию
+</p>
+<a name="setcolwidth"></a>
+<p>
+<font face="Courier" color="#800080"><b>Procedure</b> <font color="#808000"><b>SetColWidth</b></font>( wid: Single; <b>var</b> wrd: Variant ); stdcall; external 'msofficedll.dll' name 'SetColWidth';</font>
+<br>
+Установить ширину текущего столбца в таблице.
+Использовать после вызова <a href=#addtext>AddText</a>(), иначе значение игнорируется
+</p>
+<a name="setrowheight"></a>
+<p>
+<font face="Courier" color="#800080"><b>Procedure</b> <font color="#808000"><b>SetRowHeight</b></font>( h: Single; <b>var</b> wrd: Variant ); stdcall; external 'msofficedll.dll' name 'SetRowHeight';</font>
+<br>
+Установить высоту текущей строки в таблице.
+</p>
+<a name="gotoright"></a>
+<p>
+<font face="Courier" color="#800080"><b>procedure</b> <font color="#808000"><b>GotoRight</b></font>( cells: <b>Integer</b>; <b>var</b> wrd: Variant ); stdcall; external 'msofficedll.dll' name 'GotoRight';</font>
+<br>
+Перейти на cells ячеек вправо. Если таблица закончилась, вставляет новую строку
+</p>
+<a name="gotoleft"></a>
+<p>
+<font face="Courier" color="#800080"><b>procedure</b> <font color="#808000"><b>GotoLeft</b></font>( cells: <b>Integer</b>; <b>var</b> wrd: Variant ); stdcall; external 'msofficedll.dll' name 'GotoLeft';</font>
+<br>
+Перейти на cells ячеек влево.
+</p>
+<a name="gotoup"></a>
+<p>
+<font face="Courier" color="#800080"><b>procedure</b> <font color="#808000"><b>GotoUp</b></font>( lines: <b>Integer</b>; <b>var</b> wrd: Variant ); stdcall; external 'msofficedll.dll' name 'GotoUp';</font>
+<br>
+Перейти на lines строк вверх
+</p>
+<a name="gotodown"></a>
+<p>
+<font face="Courier" color="#800080"><b>procedure</b> <font color="#808000"><b>GotoDown</b></font>( lines: <b>Integer</b>; <b>var</b> wrd: Variant ); stdcall; external 'msofficedll.dll' name 'GotoDown';</font>
+<br>
+Перейти на lines строк вниз.
+</p>
+<a name="mergecellsr"></a>
+<p>
+<font face="Courier" color="#800080"><b>Procedure</b> <font color="#808000"><b>MergeCellsR</b></font>( count: <b>Integer</b>; <b>var</b> Wrd: Variant ); stdcall; external 'msofficedll.dll' name 'MergeCellsR';</font>
+<br>
+Обьединить указанные ячейки вправо. Курсор должен находиться в первой из них
+</p>
+<a name="mergecellsd"></a>
+<p>
+<font face="Courier" color="#800080"><b>Procedure</b> <font color="#808000"><b>MergeCellsD</b></font>( count: <b>Integer</b>; <b>var</b> Wrd: Variant ); stdcall; external 'msofficedll.dll' name 'MergeCellsD';</font>
+<br>
+Обьединить указанные ячейки вниз. Курсор должен находиться в первой из них
+</p>
+<a name="deleterow"></a>
+<p>
+<font face="Courier" color="#800080"><b>procedure</b> <font color="#808000"><b>DeleteRow</b></font>( <b>var</b> Wrd: Variant ); stdcall; external 'msofficedll.dll' name 'DeleteRow';</font>
+<br>
+Удалить текущую строку таблицы
+</p>
+<a name="deletecol"></a>
+<p>
+<font face="Courier" color="#800080"><b>procedure</b> <font color="#808000"><b>DeleteCol</b></font>( <b>var</b> Wrd: Variant ); stdcall; external 'msofficedll.dll' name 'DeleteCol';</font>
+<br>
+Удалить текущий столбец таблицы
+</p>
+<a name="exittable"></a>
+<p>
+<font face="Courier" color="#800080"><b>Procedure</b> <font color="#808000"><b>ExitTable</b></font>( wrd: Variant ); stdcall; external 'msofficedll.dll' name 'ExitTable';</font>
+<br>
+Выйти из таблицы
+</p>
+<a name="celltextorientation"></a>
+<p>
+<font face="Courier" color="#800080"><b>procedure</b> <font color="#808000"><b>CellTextOrientation</b></font>( orient: <b>Integer</b>; wrd: Variant ); stdcall; external 'msofficedll.dll' name 'CellTextOrientation';</font>
+<br>
+Направление текста в таблице:
+wdTextOrientationHorizontal = 0;
+wdTextOrientationUpward = 2;
+wdTextOrientationDownward = 3;
+wdTextOrientationVerticalFarEast = 1;
+wdTextOrientationHorizontalRotatedFarEast = 4;
+</p>
+<a name="insertheader"></a>
+<p>
+<font face="Courier" color="#800080"><b>procedure</b> <font color="#808000"><b>InsertHeader</b></font>( hdr: ShortString; <b>var</b> wrd: Variant ); stdcall; external 'msofficedll.dll' name 'InsertHeader';</font>
+<br>
+Вставить верхний колонтитул
+</p>
+<a name="insertfooter"></a>
+<p>
+<font face="Courier" color="#800080"><b>procedure</b> <font color="#808000"><b>InsertFooter</b></font>( ftr: ShortString; <b>var</b> wrd: Variant ); stdcall; external 'msofficedll.dll' name 'InsertFooter';</font>
+<br>
+Вставить нижний колонтитул
+</p>
+<a name="setwordvisible"></a>
+<p>
+<font face="Courier" color="#800080"><b>procedure</b> <font color="#808000"><b>SetWordVisible</b></font>( <b>var</b> wrd: Variant; Visible: <b>Boolean</b> ); stdcall; external 'msofficedll.dll' name 'SetWordVisible';</font>
+<br>
+сделать Ворд видимым на экране
+</p>
+<a name="checkwordversion"></a>
+<p>
+<font face="Courier" color="#800080"><b>function</b> <font color="#808000"><b>CheckWordVersion</b></font>( <b>var</b> wrd: Variant ): <b>Boolean</b>; stdcall; external 'msofficedll.dll' name 'CheckWordVersion';</font>
+<br>
+проверить может ли использоваться установленная версия Ворда
+</p>
+<a name="savedocas"></a>
+<p>
+<font face="Courier" color="#800080"><b>Function</b> <font color="#808000"><b>SaveDocAs</b></font>( file_: Shortstring; <b>var</b> wrd: Variant ): <b>boolean</b>; stdcall; external 'msofficedll.dll' name 'SaveDocAs';</font>
+<br>
+сохранить созданный документ с указанным именем и путем
+</p>
+<a name="closedoc"></a>
+<p>
+<font face="Courier" color="#800080"><b>Function</b> <font color="#808000"><b>CloseDoc</b></font>( <b>var</b> wrd: Variant ): <b>boolean</b>; stdcall; external 'msofficedll.dll' name 'CloseDoc';</font>
+<br>
+закрыть документ
+</p>
+<a name="closeword"></a>
+<p>
+<font face="Courier" color="#800080"><b>Function</b> <font color="#808000"><b>CloseWord</b></font>( <b>var</b> wrd: Variant ): <b>boolean</b>; stdcall; external 'msofficedll.dll' name 'CloseWord';</font>
+<br>
+выход из Word'a
+</p>
+<a name="printdialogword"></a>
+<p>
+<font face="Courier" color="#800080"><b>Function</b> <font color="#808000"><b>PrintDialogWord</b></font>( <b>var</b> wrd: Variant ): <b>boolean</b>; stdcall; external 'msofficedll.dll' name 'PrintDialogWord';</font>
+<br>
+вызов диалога печати
+</p>
+<a name="createtableex"></a>
+<p>
+<font face="Courier" color="#800080"><b>Procedure</b> <font color="#808000"><b>CreateTableEx</b></font>( Col, Row: <b>Integer</b>; DefaultTableBehavior, AutoFitBehavior: <b>Integer</b>; <b>var</b> wrd: Variant ); stdcall; external 'msofficedll.dll' name 'CreateTableEx';</font>
+<br>
+создать таблицу с расширенными параметрами.
+arg1:
+wdWord8TableBehavior = 0;
+wdWord9TableBehavior = 1;
+arg2:
+wdAutoFitFixed = 0;
+wdAutoFitContent = 1;
+wdAutoFitWindow = 2;
+</p>
+<a name="newxlsdocument"></a>
+<p>
+<font face="Courier" color="#800080"><b>procedure</b> <font color="#808000"><b>NewXlsDocument</b></font>( <b>var</b> xls: Variant; visible: <b>Boolean</b> ); StdCall; external 'msofficedll.dll' name 'NewXlsDocument';</font>
+<br>
+Создает новый документ Excel
+</p>
+<a name="setexcellvisible"></a>
+<p>
+<font face="Courier" color="#800080"><b>procedure</b> <font color="#808000"><b>SetExcellVisible</b></font>( <b>var</b> xls: Variant; visible: <b>Boolean</b> ); StdCall; external 'msofficedll.dll' name 'SetExcellVisible';</font>
+<br>
+Установить
+</p>
+<a name="openxlsdocument"></a>
+<p>
+<font face="Courier" color="#800080"><b>procedure</b> <font color="#808000"><b>OpenXlsDocument</b></font>( <b>var</b> xls: Variant; xlsfile: ShortString ); StdCall; external 'msofficedll.dll' name 'OpenXlsDocument';</font>
+<br>
+Открыть указанную книгу
+</p>
+<a name="closexlsdocument"></a>
+<p>
+<font face="Courier" color="#800080"><b>procedure</b> <font color="#808000"><b>CloseXlsDocument</b></font>( <b>var</b> xls: Variant ); StdCall; external 'msofficedll.dll' name 'CloseXlsDocument';</font>
+<br>
+Закрыть текущую книгу
+</p>
+<a name="closeexcel"></a>
+<p>
+<font face="Courier" color="#800080"><b>function</b> <font color="#808000"><b>CloseExcel</b></font>( <b>var</b> xls: Variant ): <b>Boolean</b>; StdCall; external 'msofficedll.dll' name 'CloseExcel';</font>
+<br>
+Закрыть Excel
+</p>
+<a name="savexlsdocument"></a>
+<p>
+<font face="Courier" color="#800080"><b>procedure</b> <font color="#808000"><b>SaveXlsDocument</b></font>( <b>var</b> xls: Variant ); StdCall; external 'msofficedll.dll' name 'SaveXlsDocument';</font>
+<br>
+Сохранить текущую книгу
+</p>
+<a name="savexlsdocumentas"></a>
+<p>
+<font face="Courier" color="#800080"><b>function</b> <font color="#808000"><b>SaveXlsDocumentAs</b></font>( <b>var</b> xls: Variant; xlsfile: ShortString ): <b>Boolean</b>; StdCall; external 'msofficedll.dll' name 'SaveXlsDocumentAs';</font>
+<br>
+Сохранить текущую книгу под указанным именем
+</p>
+<a name="getxlsworkbook"></a>
+<p>
+<font face="Courier" color="#800080"><b>function</b> <font color="#808000"><b>GetXlsWorkBook</b></font>( <b>var</b> xls: Variant; idx: <b>Integer</b> ): Variant; StdCall; external 'msofficedll.dll' name 'GetXlsWorkBook';</font>
+<br>
+Получить ссылку на активную книгу
+</p>
+<a name="getxlsworkbooksheet"></a>
+<p>
+<font face="Courier" color="#800080"><b>function</b> <font color="#808000"><b>GetXlsWorkBookSheet</b></font>( <b>var</b> WorkBook: Variant; idx: <b>Integer</b> ): Variant; StdCall; external 'msofficedll.dll' name 'GetXlsWorkBookSheet';</font>
+<br>
+Получить ссылку на активный лист
+</p>
+<a name="setcellvalue"></a>
+<p>
+<font face="Courier" color="#800080"><b>procedure</b> <font color="#808000"><b>SetCellValue</b></font>( <b>var</b> Xls: Variant; CellName: ShortString; value: ShortString ); StdCall; external 'msofficedll.dll' name 'SetCellValue';</font>
+<br>
+Записать значение как текст в указанную ячейку
+</p>
+<a name="setcellvalueinteger"></a>
+<p>
+<font face="Courier" color="#800080"><b>procedure</b> <font color="#808000"><b>SetCellValueInteger</b></font>( <b>var</b> Xls: Variant; CellName: ShortString; value: <b>Integer</b> ); StdCall; external 'msofficedll.dll' name 'SetCellValueInteger';</font>
+<br>
+Записать значение как целое число в указанную ячейку
+</p>
+<a name="setcellvaluefloat"></a>
+<p>
+<font face="Courier" color="#800080"><b>procedure</b> <font color="#808000"><b>SetCellValueFloat</b></font>( <b>var</b> Xls: Variant; CellName: ShortString; value: <b>Double</b> ); StdCall; external 'msofficedll.dll' name 'SetCellValueFloat';</font>
+<br>
+Записать значение как число с плавающей точкой в указанную ячейку
+</p>
+<a name="setcellvaluedate"></a>
+<p>
+<font face="Courier" color="#800080"><b>procedure</b> <font color="#808000"><b>SetCellValueDate</b></font>( <b>var</b> Xls: Variant; CellName: ShortString; value: TDatetime ); StdCall; external 'msofficedll.dll' name 'SetCellValueDate';</font>
+<br>
+Записать значение как дату в указанную ячейку
+</p>
+<a name="setcellvaluecurrency"></a>
+<p>
+<font face="Courier" color="#800080"><b>procedure</b> <font color="#808000"><b>SetCellValueCurrency</b></font>( <b>var</b> Xls: Variant; CellName: ShortString; value: Currency ); StdCall; external 'msofficedll.dll' name 'SetCellValueFloat';</font>
+<br>
+Записать значение с денежным форматом в указанную ячейку
+</p>
+<a name="setcellvalueformat"></a>
+<p>
+<font face="Courier" color="#800080"><b>procedure</b> <font color="#808000"><b>SetCellValueFormat</b></font>( <b>var</b> Xls: Variant; CellName: ShortString; valueformat: ShortString ); StdCall; external 'msofficedll.dll' name 'SetCellValueFormat';</font>
+<br>
+Указать формат данных заданной ячейки
+</p>
+<a name="outlookconnect"></a>
+<p>
+<font face="Courier" color="#800080"><b>procedure</b> <font color="#808000"><b>OutLookConnect</b></font>( <b>var</b> OL: Variant ); StdCall; external 'msofficedll.dll' name 'OutLookConnect';</font>
+<br>
+Подключаемся к OutLook
+</p>
+<a name="outlooknewfolder"></a>
+<p>
+<font face="Courier" color="#800080"><b>procedure</b> <font color="#808000"><b>OutLookNewFolder</b></font>( <b>var</b> OL: Variant; s: ShortString ); StdCall; external 'msofficedll.dll' name 'OutLookNewFolder';</font>
+<br>
+Новая папка контактов
+</p>
+<a name="outlooknewcontact"></a>
+<p>
+<font face="Courier" color="#800080"><b>procedure</b> <font color="#808000"><b>OutLookNewContact</b></font>( <b>var</b> OL: Variant; folder: ShortString; name: ShortString ); StdCall; external 'msofficedll.dll' name 'OutLookNewContact';</font>
+<br>
+Новый контакт
+folder - название папки в OutLook контактах;
+name - имя контакта
+Если папки folder не существует, то будет создана.
+Это вполне рабочая функция, правда добавляет только имя;
+Для добавления всего остального проишите
+OutlookContact.LastName
+OutlookContact.MiddleName
+OutlookContact.CompanyName
+Contact.HomeTelephoneNumber
+Contact.Email1Address
+и т.д. кому что нужно
+</p>
+<a name="outlookdisconnect"></a>
+<p>
+<font face="Courier" color="#800080"><b>procedure</b> <font color="#808000"><b>OutLookDisConnect</b></font>( <b>var</b> OL: Variant ); StdCall; external 'msofficedll.dll' name 'OutLookDisConnect';</font>
+<br>
+Отключаемся от OutLook
+</p>
+<hr>
+<p align="center">[&nbsp;<a href=index.htm>Index</a>&nbsp;]</p>
+<p align="center"><font face="Comic Sans MS"><small>This help is generated 12-Jan-2012 by KOL Help generator, (C) 2000-2001 by Vladimir Kladov<br>Modified (C) 2003 by Alexander Bartov</small></font></p>
+</body>
+</html>

@@ -50,9 +50,9 @@ function CentimetersToPoints(cm : Real) : Real;StdCall;
 
 
 {******************************************************************************}
-{                                                                              }
-{                   Функции для автоматизации M$ Word                          }
-{                                                                              }
+{*                                                                            *}
+{*                   Функции для автоматизации M$ Word                        *}
+{*                                                                            *}
 {******************************************************************************}
  procedure NewDocument(var Wrd : Variant; visible : Boolean);StdCall;
  {*Создает новый документ}
@@ -63,7 +63,6 @@ function CentimetersToPoints(cm : Real) : Real;StdCall;
   Wrd.Application.WindowState := wdWindowStateMaximize;
  end;
 
-//***********************************************************************************
  procedure PageMargins(l,r,t,b : Single; var wrd : Variant);StdCall;
  {*Устанавливает поля страницы}
  begin
@@ -230,7 +229,6 @@ function CentimetersToPoints(cm : Real) : Real;StdCall;
   Wrd.Selection.TypeParagraph;
  end;
 
-//***************************************************************************************
  procedure ParagraphAlign(align : Integer; var wrd : Variant);StdCall;
  {*Установить выравнивание абзаца по ширине
   wdAlignParagraphLeft = 0;
@@ -275,7 +273,6 @@ function CentimetersToPoints(cm : Real) : Real;StdCall;
    wrd.Selection.ParagraphFormat.FirstLineIndent := CentimetersToPoints(indent);
  end;
 
-//*********************************************************************************
  procedure AddTabPosition(pos : Single; var wrd : Variant);StdCall;
  {*Вставить позицию табуляции в pos см}
  begin
@@ -471,9 +468,9 @@ begin
 end;
 
 {******************************************************************************}
-{                                                                              }
-{                   Функции для автоматизации M$ Excel                         }
-{                                                                              }
+{*                                                                            *}
+{*                   Функции для автоматизации M$ Excel                       *}
+{*                                                                            *}
 {******************************************************************************}
 
  procedure NewXlsDocument(var xls : Variant; visible : Boolean);StdCall;
@@ -495,19 +492,41 @@ end;
  begin
   xls := CreateOleObject('Excel.Application');
   if xlsfile<>'' then xls.WorkBooks.Open(xlsfile);
-  xls.Visible := true;
  end;
 
+ procedure CloseXlsDocument(var xls : Variant);StdCall;
+ {*Закрыть текущую книгу}
+ begin
+  xls.ActiveWorkBook.Close;
+ end;
+
+ function CloseExcel(var xls : Variant):Boolean;StdCall;
+ {*Закрыть Excel}
+ begin
+  CloseExcel:=true;
+  try
+   xls.Quit;
+  except
+   CloseExcel:=false;
+  end;
+ end;
+ 
  procedure SaveXlsDocument(var xls : Variant);StdCall;
  {*Сохранить текущий документ}
  begin
   xls.ActiveWorkBook.Save;
  end;
 
- procedure SaveXlsDocumentAs(var xls : Variant; xlsfile : ShortString);StdCall;
+ function SaveXlsDocumentAs(var xls : Variant; xlsfile : ShortString):Boolean;StdCall;
  {*Сохранить текущий документ под указанным именем}
  begin
-  xls.ActiveWorkBook.SaveAs(xlsfile);
+  SaveXlsDocumentAs:=true;
+  xls.DisplayAlerts:=false;
+  try
+   xls.ActiveWorkBook.SaveAs(xlsfile);
+  except
+   SaveXlsDocumentAs:=false;
+  end;
  end;
 
  function GetXlsWorkBook(var xls : Variant; idx : Integer): Variant;StdCall;
@@ -669,8 +688,9 @@ PrintDialogWord,CreateTableEx,
 
 //Excel
 NewXlsDocument,SetExcellVisible,OpenXlsDocument,SaveXlsDocument,SaveXlsDocumentAs,
-GetXlsWorkBook,GetXlsWorkBookSheet,SetCellValue,SetCellValueInteger,
-SetCellValueFloat,SetCellValueDate,SetCellValueCurrency,SetCellValueFormat,
+CloseXlsDocument,CloseExcel,GetXlsWorkBook,GetXlsWorkBookSheet,SetCellValue,
+SetCellValueInteger,SetCellValueFloat,SetCellValueDate,SetCellValueCurrency,
+SetCellValueFormat,
 
 //Outlook
 OutLookConnect,OutLookNewFolder,OutLookNewContact,OutLookDisConnect;
